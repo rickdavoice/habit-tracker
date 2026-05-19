@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habit Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6c3483">
+</head>
+<body>
+  <h1 style="display:none;">Habit Tracker</h1>
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+    <div id="dateAndHabit" style="display:flex; align-items:center; gap:12px;">
+      <div id="todayDate" style="font-size:14px; color:#aaa; font-weight:600;"></div>
+    </div>
+    <button id="calendarBtn"
+      style="margin-left:auto; background:#6c3483; color:#fff; border-radius:8px; padding:12px 20px; font-size:18px; border:none; cursor:pointer;">📅</button>
+  </div>
+
+  <!-- Habit Controls -->
+  <div class="card">
+    <div class="habit-controls">
+      <input type="text" id="habit-input" placeholder="Add a new habit" style="flex:1; padding:12px; border-radius:8px; border:none; background:#2e2e2e; color:#fff;">
+      <button id="add-habit" style="background:#6c3483; color:#fff; border:none; border-radius:8px; padding:12px 20px; font-weight:bold; cursor:pointer;">Add</button>
+    </div>
+
+    <div id="habits-list" style="margin-top:20px;"></div>
+  </div>
+
+  <!-- Habit History Modal -->
+  <div id="habitHistoryModal" class="history-modal" style="display:none;">
+    <div class="history-modal-content">
+      <div id="closeHabitHistoryModal" class="modal-close">✕</div>
+      <div id="habitHistoryPanel"></div>
+    </div>
+  </div>
+
+  <!-- Calendar Modal -->
+  <div id="calendarModal" class="calendar-modal" style="display:none;">
+    <div class="calendar-modal-content">
+      <button id="closeCalendarModal" class="modal-close" aria-label="Close calendar">✕</button>
+      <div id="fullCalendar"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
