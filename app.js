@@ -152,9 +152,15 @@ async function renderCalendar() {
     const isSelected = dateStr === currentDate;
     const hasData = habitDates.includes(dateStr);
 
+    const dayStyle = isSelected
+      ? 'background:#6c3483;color:white;border-radius:6px;'
+      : isToday
+      ? 'background:#4b4f55;color:white;border-radius:6px;'
+      : '';
+
     html += `
       <div class="full-calendar-day" data-date="${dateStr}"
-           style="position:relative; ${isToday || isSelected ? 'background:#6c3483;color:white;border-radius:6px;' : ''}">
+           style="position:relative; ${dayStyle}">
         <p style="margin:0;padding:0;text-align:center;">${d}</p>
         ${hasData ? '<div style="width:6px;height:6px;background:#2ecc71;border-radius:50%;position:absolute;top:4px;right:1px;transform:translateX(-50%)"></div>' : ''}
       </div>
