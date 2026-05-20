@@ -36,18 +36,74 @@ async function loadHabits() {
 
   habitsList.innerHTML = habits.map(habit => `
     <div class="habit-item" data-key="${habit.id}">
-      <div style="display:flex; align-items:center; gap:12px;">
+      <div class="habit-label" onclick="toggleHabitCompletionLabel(event, '${habit.id}')" style="display:flex; align-items:center; gap:12px;">
         <div class="habit-checkbox ${habit.completions[currentDate] ? 'completed' : ''}"
              onclick="toggleHabitCompletion('${habit.id}')"></div>
-        <span>${habit.name} <span style="color:#aaa;">(Streak: ${habit.streak || 0})</span></span>
+        <span>${habit.name} <span style="color:#888;">(Streak: ${habit.streak || 0})</span></span>
       </div>
-      <div style="display:flex; gap:8px; align-items:center;">
+      <div class="habit-actions">
         <button class="habit-edit" onclick="editHabit('${habit.id}')">✎</button>
         <button class="habit-delete" onclick="deleteHabit('${habit.id}')">✕</button>
       </div>
     </div>
   `).join('');
+
+  attachLongPressToHabitItems();
 }
+
+function attachLongPressToHabitItems() {
+  habitsList.querySelectorAll('.habit-item').forEach(item => {
+    let pressTimer = null;
+    let ignoreNextClick = false;
+
+    const showControls = () => {
+      hideAllHabitControls();
+      item.classList.add('show-controls');
+      ignoreNextClick = true;
+      window.setTimeout(() => { ignoreNextClick = false; }, 300);
+      pressTimer = null;
+    };
+
+    const clearPress = () => {
+      if (pressTimer) {
+        clearTimeout(pressTimer);
+        pressTimer = null;
+      }
+    };
+
+    item.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      pressTimer = window.setTimeout(showControls, 500);
+    });
+
+    item.addEventListener('pointerup', clearPress);
+    item.addEventListener('pointerleave', clearPress);
+    item.addEventListener('pointercancel', clearPress);
+
+    item.addEventListener('click', event => {
+      if (!item.classList.contains('show-controls')) return;
+      if (ignoreNextClick) return;
+      if (event.target.closest('.habit-actions') || event.target.classList.contains('habit-checkbox')) return;
+      hideAllHabitControls();
+    });
+  });
+}
+
+function hideAllHabitControls() {
+  habitsList.querySelectorAll('.habit-item.show-controls').forEach(item => item.classList.remove('show-controls'));
+}
+
+function toggleHabitCompletionLabel(event, id) {
+  const item = event.currentTarget.closest('.habit-item');
+  if (item && item.classList.contains('show-controls')) return;
+  toggleHabitCompletion(id);
+}
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.habit-item')) {
+    hideAllHabitControls();
+  }
+});
 
 async function addHabit() {
   const habitName = document.getElementById("habit-input").value.trim();

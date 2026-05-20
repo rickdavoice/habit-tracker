@@ -142,9 +142,35 @@ button.save:active {
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.habit-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.habit-label {
+  cursor: pointer;
+}
+
+.habit-actions .habit-edit,
+.habit-actions .habit-delete {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.habit-item.show-controls {
+  background: #3a3f44;
+}
+
+.habit-item.show-controls .habit-actions .habit-edit,
+.habit-item.show-controls .habit-actions .habit-delete {
+  display: inline-flex;
+  opacity: 1;
 }
 
 .habit-edit:hover,
